@@ -24,18 +24,31 @@
 (setq
  el-get-sources
  '(
+	 ;; General
+
    (:name ack-and-a-half)               ; for ack projectile C-c p s a
    (:name align-cljlet)
    (:name auto-complete)          ; complete as you type with overlays
    (:name clojure-mode)           ; clojure
    (:name clj-refactor)           ; clojure pro stuff
    (:name color-theme)            ; color themes
-   ;;   (:name color-theme-sanityinc)
    (:name color-theme-solarized)
+   ;;   (:name color-theme-sanityinc)
    ;;   (:name color-theme-tomorrow)
    (:name dash)
+	 (:name flx
+					:type github
+					:pkgname "lewang/flx"
+					:checkout "v0.5"
+					:after 
+					(progn
+						(ido-mode 1)
+						(ido-everywhere 1)
+						(flx-ido-mode 1)
+						(setq ido-enable-flex-matching t)
+						(setq ido-use-faces nil)))
    (:name pkg-info)
-   (:name ido-better-flex)              ; better matching
+
    (:name ido-ubiquitous)               ; ido everywhere
    (:name s)
    (:name yasnippet)                    ; powerful snippet mode
@@ -43,16 +56,6 @@
    ;; Requires No Setup ^^
    ;; Requires Setup vvvvvvv
 
-   ;; (:name ac-nrepl
-   ;;        :after (progn (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-   ;;                      (add-hook 'cider-mode-hook 'ac-nrepl-setup)
-   ;;                      (eval-after-load "auto-complete"
-   ;;                        '(add-to-list 'ac-modes 'cider-repl-mode))
-   ;;                      (defun set-auto-complete-as-completion-at-point-function ()
-   ;;                        (setq completion-at-point-functions '(auto-complete)))
-   ;;                      (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
-   ;;                      (add-hook 'cider-repl-mode-hook 'set-auto-complete-as-completion-at-point-function)
-   ;;                      (add-hook 'cider-mode-hook 'set-auto-complete-as-completion-at-point-function)))
    (:name cider
           :type github
           :pkgname "clojure-emacs/cider"
@@ -66,11 +69,11 @@
                    (setq nrepl-buffer-name-show-port t)
                    (setq cider-prompt-save-file-on-load nil)
                    (setq cider-known-endpoints '(("eccentrica-reporting" "127.0.0.1" "5111")
-						 ("eccentrica-api" "127.0.0.1" "5101")))
+																								 ("eccentrica-api" "127.0.0.1" "5101")))
                    (setq cider-repl-history-size 1000)
                    (setq cider-repl-history-file "~/.emacs.d/cider_repl_hist.txt")))
    (:name diff-hl
-	  :after (progn (global-diff-hl-mode)))
+					:after (progn (global-diff-hl-mode)))
    (:name exec-path-from-shell
           :after (progn
                    (when (memq window-system '(mac ns))
@@ -78,21 +81,19 @@
    (:name expand-region
           :after (progn
                    (global-set-key (kbd "C-=") 'er/expand-region)))
-   ;; (:name git-gutter-fringe
-   ;;  :after (progn (git-gutter-mode 1)))
    (:name goto-last-change          ; move pointer back to last change
           :after (progn
                    (global-set-key (kbd "C-x C-/") 'goto-last-change)))
    (:name highlight-parentheses
-          :after (progn 
-                   (setq hl-paren-colors '("Red" "Orange" "Yellow"
-					   "Green" "Cyan" "Blue"
-					   "Purple" "Purple" "Purple"
-					   "Purple" "Purple" "Purple" "Purple"))
-                   (setq hl-paren-background-colors '("white" "white" "black"
-						      "black" "black" "white"
-						      "white" "white" "white"
-						      "white" "white" "white" "white"))
+          :after (progn
+                   (setq hl-paren-colors '("black" "black" "black"
+																					 "black" "black" "white"
+																					 "white" "white" "white"
+																					 "white" "white" "white" "white"))
+                   (setq hl-paren-background-colors '("Red" "Orange" "Yellow"
+																					 "Green" "Cyan" "Blue"
+																					 "Purple" "Purple" "Purple"
+																					 "Purple" "Purple" "Purple" "Purple"))
                    (define-globalized-minor-mode global-highlight-parentheses-mode
                      highlight-parentheses-mode
                      (lambda ()
@@ -103,7 +104,7 @@
                    (ido-mode t)
                    (setq ido-everywhere t)
                    (ido-hacks-mode t)
-                   (setq ido-save-directory-list-file "~/.emacs.d/.ido.last")))
+                   (setq ido-save-directory-list-file "~/.ido.last")))
    (:name magit                        ; git meet emacs, and a binding
           :after (progn
                    (global-set-key (kbd "C-c g") 'magit-status)))
@@ -117,8 +118,8 @@
                    (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
                    (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
                    (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-		   (add-hook 'text-mode-hook             #'enable-paredit-mode)
-		   (add-hook 'prog-mode-hook             #'enable-paredit-mode)
+									 (add-hook 'text-mode-hook             #'enable-paredit-mode)
+									 (add-hook 'prog-mode-hook             #'enable-paredit-mode)
                    (defun bry-indent-buffer () ;; indent + align-cljlet with M-q
                      "Indent the currently visited buffer."
                      (interactive)
@@ -128,14 +129,13 @@
                    (global-set-key (kbd "M-q") 'bry-indent-buffer)))
    (:name projectile
           :after (progn 
-		   (projectile-global-mode)
-		   (setq projectile-enable-caching t)))
+									 (projectile-global-mode)))
    (:name rainbow-delimiters            ; pretty and useful
-	  :after (progn
-		   (global-rainbow-delimiters-mode)))
+					:after (progn
+									 (global-rainbow-delimiters-mode)))
    (:name smex
           :after (progn
-		   (smex-auto-update nil)
+									 (smex-auto-update nil)
                    (setq smex-save-file "~/.emacs.d/.smex-items")
                    (global-set-key (kbd "M-x") 'smex)
                    (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
