@@ -25,7 +25,6 @@
  el-get-sources
  '(
 	 ;; General
-
    (:name ack-and-a-half)               ; for ack projectile C-c p s a
    (:name align-cljlet)
    (:name auto-complete)          ; complete as you type with overlays
@@ -152,8 +151,7 @@
 (when (ignore-errors (el-get-executable-find "cvs"))
   (add-to-list 'my:el-get-packages 'emacs-goodies-el)) ; the debian addons for emacs
 (when (ignore-errors (el-get-executable-find "svn"))
-  (loop for p in '(psvn       ; M-x svn-status
-                   )
+  (loop for p in '(psvn)
         do (add-to-list 'my:el-get-packages p)))
 (setq my:el-get-packages
       (append
@@ -227,7 +225,9 @@
 
 ;; Font size
 (define-key global-map (kbd "C-+") 'text-scale-increase)
+(define-key global-map (kbd "S-+") 'text-scale-increase)
 (define-key global-map (kbd "C--") 'text-scale-decrease)
+(define-key global-map (kbd "S--") 'text-scale-decrease)
 
 ;; regex searches with C-M-[s|r]
 (global-set-key (kbd "C-M-s") 'isearch-forward-regexp)
@@ -243,15 +243,14 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
-
-
-)
+ '(custom-safe-themes (quote ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(clojure-test-error-face ((t (:background "yellow4"))))
+ '(clojure-test-failure-face ((t (:background "brown4"))))
  '(vhl/default-face ((t (:background "#6b0000")))))
 
 ;; load theme after they're safe!
