@@ -9,7 +9,7 @@
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 (unless (require 'el-get nil t)
   (url-retrieve
-	 "https://raw.githubusercontent.com/dimitri/el-get/c827925bd48ac42a16065490ca7c1f1a2d317ea6/el-get-install.el"
+   "https://raw.githubusercontent.com/dimitri/el-get/c827925bd48ac42a16065490ca7c1f1a2d317ea6/el-get-install.el"
    (lambda (s)
      (end-of-buffer)
      (eval-print-last-sexp))))
@@ -133,6 +133,13 @@
                    (setq smex-save-file "~/.emacs.d/.smex-items")
                    (global-set-key (kbd "M-x") 'smex)
                    (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
+   (:name wgrep
+          :type github
+          :pkgname "mhayashi1120/Emacs-wgrep"
+          :checkout "8e91b932d9c64c5525a1c0a8c770ec55e213e790"
+          :after (progn
+                   ;; C-c C-p to enter edit mode in grep view
+                   (setq wgrep-auto-save-buffer t)))
    (:name volatile-highlights           ; see what you undo'd
           :after (progn
                    (volatile-highlights-mode t)))))
