@@ -12,7 +12,7 @@
 
 (unless (require 'el-get nil t)
   (url-retrieve
-	 "https://github.com/dimitri/el-get/blob/5.1/el-get-install.el"
+   "https://github.com/dimitri/el-get/blob/5.1/el-get-install.el"
    (lambda (s)
      (end-of-buffer)
      (eval-print-last-sexp))))
@@ -25,7 +25,7 @@
  el-get-sources
  '(
    ;; General
-   (:name ack-and-a-half)               ; for ack projectile C-c p s a
+   (:name ack-and-a-half)               ; for ack projectile s-a
    (:name align-cljlet)
    (:name auto-complete)          ; complete as you type with overlays
    (:name clojure-mode)           ; clojure
@@ -78,14 +78,14 @@
                    (global-set-key (kbd "C-x C-/") 'goto-last-change)))
    (:name highlight-parentheses
           :after (progn
-                   (setq hl-paren-colors 
-												 '("black" "black" "black"
-													 "black" "black" "black"
-													 "black"))
+                   (setq hl-paren-colors
+                         '("black" "black" "black"
+                           "black" "black" "black"
+                           "black"))
                    (setq hl-paren-background-colors
                          '("#dc322f" "#cb4b16" "#b58900"
-                           "#859900" "#2aa198" "#268bd2" 
-													 "#d33682"))
+                           "#859900" "#2aa198" "#268bd2"
+                           "#d33682"))
                    (define-globalized-minor-mode global-highlight-parentheses-mode
                      highlight-parentheses-mode
                      (lambda ()
@@ -121,7 +121,9 @@
           :after (progn
                    (projectile-global-mode)
                    (global-set-key (kbd "s-f") 'projectile-find-file)
-                   (global-set-key (kbd "s-g") 'projectile-grep)))
+                   (global-set-key (kbd "s-g") 'projectile-grep)
+                   (global-set-key (kbd "s-a") 'projectile-ack)
+                   (global-set-key (kbd "s-p") 'projectile-switch-project)))
    (:name rainbow-delimiters            ; pretty and useful
           :after (progn
                    (global-rainbow-delimiters-mode)))
@@ -150,25 +152,25 @@
 ;; install new packages and init already installed packages
 (el-get 'sync my:el-get-packages)
 
- ;;;;;;;;;;;;;;;;;;;; ;;;;;;;;;;;;;;;;;;;; ;;;;;;;;;;;;;;;;;;;;
- ;;;;;;;;;;;;;;;;;;;; ;; end of el-get  ;; ;;;;;;;;;;;;;;;;;;;;
- ;;;;;;;;;;;;;;;;;;;; ;;;;;;;;;;;;;;;;;;;; ;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;; end of el-get  ;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq inhibit-splash-screen t)												 	 ; no splash screen, thanks
-(line-number-mode 1)																	 	 ; have line numbers and
-(column-number-mode 1)																 	 ; column numbers in the mode line
-(tool-bar-mode -1)																		 	 ; no tool bar with icons
-(scroll-bar-mode -1)																	 	 ; no scroll bars
-(global-hl-line-mode)																	 	 ; highlight current line
-(global-linum-mode 1)																	 	 ; add line numbers on the left
-(setq x-select-enable-clipboard t)										 	 ; Use the system clipboard
-(global-auto-revert-mode 1)														 	 ; pickup external file changes (i.e. git)
-(setq-default sh-basic-offset 2)											 	 ; shell
-(setq-default sh-indentation 2)												 	 ; shell indentation
-(setq-default tab-width 2)														 	 ; Tab width of 2
-(fset 'yes-or-no-p 'y-or-n-p)													 	 ; enable y/n answers
-(setq initial-scratch-message "")											 	 ; empty scratch message
-(setq ring-bell-function (lambda () (message "*beep*"))) ; dont beep outloud, thats rude.
+(setq inhibit-splash-screen t)                                  ; no splash screen, thanks
+(line-number-mode 1)                                            ; have line numbers and
+(column-number-mode 1)                                          ; column numbers in the mode line
+(tool-bar-mode -1)                                              ; no tool bar with icons
+(scroll-bar-mode -1)                                            ; no scroll bars
+(global-hl-line-mode)                                           ; highlight current line
+(global-linum-mode 1)                                           ; add line numbers on the left
+(setq x-select-enable-clipboard t)                              ; Use the system clipboard
+(global-auto-revert-mode 1)                                     ; pickup external file changes (i.e. git)
+(setq-default sh-basic-offset 2)                                ; shell
+(setq-default sh-indentation 2)                                 ; shell indentation
+(setq-default tab-width 2)                                      ; Tab width of 2
+(fset 'yes-or-no-p 'y-or-n-p)                                   ; enable y/n answers
+(setq initial-scratch-message "")                               ; empty scratch message
+(setq ring-bell-function (lambda () (message "*beep*")))        ; dont beep outloud, thats rude.
 
 ;; Navigate windows with shift-<arrows>
 (windmove-default-keybindings 'shift)
@@ -208,6 +210,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes (quote ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default))))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
