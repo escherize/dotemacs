@@ -12,7 +12,7 @@
 
 (unless (require 'el-get nil t)
   (url-retrieve
-   "https://github.com/dimitri/el-get/raw/master/el-get-install.el"
+	 "https://github.com/dimitri/el-get/blob/5.1/el-get-install.el"
    (lambda (s)
      (end-of-buffer)
      (eval-print-last-sexp))))
@@ -51,8 +51,6 @@
                    (setq cider-popup-stacktraces nil)
                    (setq nrepl-buffer-name-show-port t)
                    (setq cider-prompt-save-file-on-load nil)
-                   ;; (setq cider-known-endpoints '(("eccentrica-reporting" "127.0.0.1" "5111")
-                   ;;                                ("eccentrica-api" "127.0.0.1" "5101")))
                    (setq cider-repl-history-size 1000)
                    (setq cider-repl-history-file "~/.emacs.d/cider_repl_hist.txt")))
    (:name diff-hl
@@ -80,16 +78,14 @@
                    (global-set-key (kbd "C-x C-/") 'goto-last-change)))
    (:name highlight-parentheses
           :after (progn
-                   (setq hl-paren-colors '("black" "black" "black"
-                                           "black" "black" "black"
-                                           "black" "black" "black"
-                                           "black" "black" "black" "black"))
+                   (setq hl-paren-colors 
+												 '("black" "black" "black"
+													 "black" "black" "black"
+													 "black"))
                    (setq hl-paren-background-colors
-                         ;; Solarized Dark color scheme
                          '("#dc322f" "#cb4b16" "#b58900"
                            "#859900" "#2aa198" "#268bd2" 
-													 "#d33682" "#d33682" "#d33682" 
-													 "#d33682" "#d33682" "#d33682" "#d33682"))
+													 "#d33682"))
                    (define-globalized-minor-mode global-highlight-parentheses-mode
                      highlight-parentheses-mode
                      (lambda ()
@@ -114,7 +110,6 @@
                    (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
                    (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
                    (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-                   (add-hook 'text-mode-hook             #'enable-paredit-mode)
                    (add-hook 'prog-mode-hook             #'enable-paredit-mode)
                    (defun bry-indent-buffer () ;; indent + goodies with C-c M-q
                      (interactive)
@@ -139,13 +134,10 @@
    (:name volatile-highlights           ; see what you undo'd
           :after (progn
                    (volatile-highlights-mode t)))))
-
-;; some el-get stuff.
 (setq my:el-get-packages '(el-get))
+
 ;; Some recipes require extra tools to be installed
-;;
 ;; Note: el-get-install requires git, so we know we have at least that.
-;;
 (when (ignore-errors (el-get-executable-find "cvs"))
   (add-to-list 'my:el-get-packages 'emacs-goodies-el)) ; the debian addons for emacs
 (when (ignore-errors (el-get-executable-find "svn"))
@@ -162,20 +154,20 @@
  ;;;;;;;;;;;;;;;;;;;; ;; end of el-get  ;; ;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;; ;;;;;;;;;;;;;;;;;;;; ;;;;;;;;;;;;;;;;;;;;
 
-(setq inhibit-splash-screen t)    ; no splash screen, thanks
-(line-number-mode 1)      ; have line numbers and
-(column-number-mode 1)      ; column numbers in the mode line
-(tool-bar-mode -1)      ; no tool bar with icons
-(scroll-bar-mode -1)      ; no scroll bars
-(global-hl-line-mode)     ; highlight current line
-(global-linum-mode 1)     ; add line numbers on the left
-(setq x-select-enable-clipboard t)  ; Use the system clipboard
-(global-auto-revert-mode 1) ; pickup external file changes (i.e. git)
-(setq-default sh-basic-offset 2)  ; shell
-(setq-default sh-indentation 2)   ; shell indentation
-(setq-default tab-width 2) ; Tab width of 2
-(fset 'yes-or-no-p 'y-or-n-p) ; enable y/n answers
-(setq initial-scratch-message "") ; empty scratch message
+(setq inhibit-splash-screen t)												 	 ; no splash screen, thanks
+(line-number-mode 1)																	 	 ; have line numbers and
+(column-number-mode 1)																 	 ; column numbers in the mode line
+(tool-bar-mode -1)																		 	 ; no tool bar with icons
+(scroll-bar-mode -1)																	 	 ; no scroll bars
+(global-hl-line-mode)																	 	 ; highlight current line
+(global-linum-mode 1)																	 	 ; add line numbers on the left
+(setq x-select-enable-clipboard t)										 	 ; Use the system clipboard
+(global-auto-revert-mode 1)														 	 ; pickup external file changes (i.e. git)
+(setq-default sh-basic-offset 2)											 	 ; shell
+(setq-default sh-indentation 2)												 	 ; shell indentation
+(setq-default tab-width 2)														 	 ; Tab width of 2
+(fset 'yes-or-no-p 'y-or-n-p)													 	 ; enable y/n answers
+(setq initial-scratch-message "")											 	 ; empty scratch message
 (setq ring-bell-function (lambda () (message "*beep*"))) ; dont beep outloud, thats rude.
 
 ;; Navigate windows with shift-<arrows>
@@ -190,7 +182,6 @@
     (or (set-face-font 'default "mplus-1m-light-14")
         (set-face-font 'default "Monaco-13"))
   (set-face-font 'default "Monospace-10"))
-
 
 ;; under mac, have Command as Super and Alt as Meta
 (when (string-match "apple-darwin" system-configuration)
@@ -225,6 +216,9 @@
  '(clojure-test-error-face ((t (:background "yellow4"))))
  '(clojure-test-failure-face ((t (:background "brown4"))))
  '(vhl/default-face ((t (:background "#6b0000")))))
+
+(when (file-exists-p "~/.emacs.d/user.el")
+  (load (expand-file-name "~/.emacs.d/user.el")))
 
 ;; one must load themes only after they're declared safe!
 (load-theme 'solarized-dark)
