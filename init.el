@@ -1,15 +1,12 @@
-;; Author: Dimitri Fontaine <dim@tapoueh.org>
-;; URL: https://github.com/dimitri/emacs-kicker
-;; Created: 2011-04-15
-;; Keywords: emacs setup el-get kick-start starter-kit
+;; Original Author: Dimitri Fontaine <dim@tapoueh.org>
+;; Heavily Edited: Bryan Maass <bryan.maass@gmail.com>
+;; URL: https://github.com/escherize/dotemacs
+;; Keywords: emacs setup el-get kick-start starter-kit clojure
 ;; Licence: WTFPL, grab your copy here: http://sam.zoy.org/wtfpl/
-;;
-;; This file is NOT part of GNU Emacs.
+
 
 (require 'cl)       ; common lisp goodies, loop
-
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-
 (unless (require 'el-get nil t)
   (url-retrieve
    "https://github.com/dimitri/el-get/blob/5.1/el-get-install.el"
@@ -25,19 +22,19 @@
  el-get-sources
  '(
    ;; General
-   (:name ack-and-a-half)               ; for ack projectile s-a
-   (:name align-cljlet)
-   (:name auto-complete)          ; complete as you type with overlays
-   (:name clojure-mode)           ; clojure
-   (:name clj-refactor)           ; clojure pro stuff
-   (:name color-theme)            ; color themes
-   (:name color-theme-solarized)
-   (:name dash)
-   (:name pkg-info)
-   (:name ido-ubiquitous)               ; ido everywhere
-   (:name s)
-   (:name yasnippet)                    ; powerful snippet mode
-   ;; Requires No Setup ^^
+   (:name ack-and-a-half)        ; for ack-in-project: s-a
+   (:name align-cljlet)          ; align clojure lets..
+   (:name auto-complete)         ; complete as you type with overlays
+   (:name clojure-mode)          ; clojure
+   (:name clj-refactor)          ; clojure pro stuff
+   (:name color-theme)           ; color themes
+   (:name color-theme-solarized) ; http://ethanschoonover.com/solarized
+   (:name dash)                  ; a dependancy
+   (:name pkg-info)              ; a dependancy
+   (:name ido-ubiquitous)        ; ido everywhere
+   (:name s)                     ; a string library
+   (:name yasnippet)             ; powerful snippet mode
+   ;; Requires No Setup ^^^^
    ;; Requires Setup vvvvvvv
    (:name cider
           :type github
@@ -107,16 +104,19 @@
                    (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)))
    (:name paredit                       ; balance parens
           :after (progn
-                   (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+                   (autoload 'enable-paredit-mode "paredit"
+                     "Turn on pseudo-structural editing of Lisp code." t)
                    (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
                    (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
                    (add-hook 'prog-mode-hook             #'enable-paredit-mode)
-                   (defun bry-indent-buffer () ;; indent + goodies with C-c M-q
+                   (defun bry-indent-buffer () ;; indent++
                      (interactive)
                      (indent-region (point-min) (point-max))
                      (untabify (point-min) (point-max))
                      (delete-trailing-whitespace))
-                   (global-set-key (kbd "C-c M-q") 'bry-indent-buffer)))
+                   (global-set-key (kbd "M-q") 'bry-indent-buffer)
+                   (eval-after-load 'paredit
+                     '(define-key paredit-mode-map (kbd "M-q") nil))))
    (:name projectile
           :after (progn
                    (projectile-global-mode)
@@ -156,21 +156,21 @@
  ;;;;;;;;;;;;;;;;;;;;;;; end of el-get  ;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq inhibit-splash-screen t)                                  ; no splash screen, thanks
-(line-number-mode 1)                                            ; have line numbers and
-(column-number-mode 1)                                          ; column numbers in the mode line
-(tool-bar-mode -1)                                              ; no tool bar with icons
-(scroll-bar-mode -1)                                            ; no scroll bars
-(global-hl-line-mode)                                           ; highlight current line
-(global-linum-mode 1)                                           ; add line numbers on the left
-(setq x-select-enable-clipboard t)                              ; Use the system clipboard
-(global-auto-revert-mode 1)                                     ; pickup external file changes (i.e. git)
-(setq-default sh-basic-offset 2)                                ; shell
-(setq-default sh-indentation 2)                                 ; shell indentation
-(setq-default tab-width 2)                                      ; Tab width of 2
-(fset 'yes-or-no-p 'y-or-n-p)                                   ; enable y/n answers
-(setq initial-scratch-message "")                               ; empty scratch message
-(setq ring-bell-function (lambda () (message "*beep*")))        ; dont beep outloud, thats rude.
+(setq inhibit-splash-screen t)                           ; no splash screen, thanks
+(line-number-mode 1)                                     ; have line numbers and
+(column-number-mode 1)                                   ; column numbers in the mode line
+(tool-bar-mode -1)                                       ; no tool bar with icons
+(scroll-bar-mode -1)                                     ; no scroll bars
+(global-hl-line-mode)                                    ; highlight current line
+(global-linum-mode 1)                                    ; add line numbers on the left
+(setq x-select-enable-clipboard t)                       ; Use the system clipboard
+(global-auto-revert-mode 1)                              ; pickup external file changes (i.e. git)
+(setq-default sh-basic-offset 2)                         ; shell
+(setq-default sh-indentation 2)                          ; shell indentation
+(setq-default tab-width 2)                               ; Tab width of 2
+(fset 'yes-or-no-p 'y-or-n-p)                            ; enable y/n answers
+(setq initial-scratch-message "")                        ; empty scratch message
+(setq ring-bell-function (lambda () (message "*beep*"))) ; dont beep outloud, thats rude.
 
 ;; Navigate windows with shift-<arrows>
 (windmove-default-keybindings 'shift)
@@ -181,8 +181,7 @@
 
 ;; choose your own fonts, in a system dependant way
 (if (string-match "apple-darwin" system-configuration)
-    (or (set-face-font 'default "mplus-1m-light-14")
-        (set-face-font 'default "Monaco-13"))
+    (set-face-font 'default "Monaco-13")
   (set-face-font 'default "Monospace-10"))
 
 ;; under mac, have Command as Super and Alt as Meta
