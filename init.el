@@ -1,5 +1,5 @@
 ;; Original Author: Dimitri Fontaine <dim@tapoueh.org>
-;; Heavily Edited: Bryan Maass <bryan.maass@gmail.com>
+;; Heavily Edited by: Bryan Maass <bryan.maass@gmail.com>
 ;; URL: https://github.com/escherize/dotemacs
 ;; Keywords: emacs setup el-get kick-start starter-kit clojure
 ;; Licence: WTFPL, grab your copy here: http://sam.zoy.org/wtfpl/
@@ -9,6 +9,7 @@
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 (unless (require 'el-get nil t)
   (url-retrieve
+   ;; nail down version of el-get.
    "https://raw.githubusercontent.com/dimitri/el-get/c827925bd48ac42a16065490ca7c1f1a2d317ea6/el-get-install.el"
    (lambda (s)
      (end-of-buffer)
@@ -25,8 +26,6 @@
    (:name ack-and-a-half)        ; for ack-in-project: s-a
    (:name align-cljlet)          ; align clojure lets..
    (:name auto-complete)         ; complete as you type with overlays
-   (:name clojure-mode)          ; clojure
-   (:name clj-refactor)          ; clojure pro stuff
    (:name color-theme)           ; color themes
    (:name color-theme-solarized) ; http://ethanschoonover.com/solarized
    (:name dash)                  ; a dependancy
@@ -39,7 +38,7 @@
    (:name cider
           :type github
           :pkgname "clojure-emacs/cider"
-          :checkout "v0.6.0"
+          :checkout "v0.7.0"
           :after (progn
                    (add-hook 'cider-repl-mode-hook 'paredit-mode)
                    (add-hook 'clojure-mode-hook 'cider-mode)
@@ -50,6 +49,20 @@
                    (setq cider-prompt-save-file-on-load nil)
                    (setq cider-repl-history-size 1000)
                    (setq cider-repl-history-file "~/.emacs.d/cider_repl_hist.txt")))
+   (:name clj-refactor
+          :description "A collection of simple clojure refactoring functions"
+          :type github
+          :checkout "0.12.0"
+          :depends (dash s clojure-mode yasnippet paredit multiple-cursors)
+          :pkgname "magnars/clj-refactor.el")
+   (:name clojure-mode             ; clojure
+          :after (progn
+                   (add-hook
+                    'clojure-mode-hook
+                    (lambda ()
+                      (clj-refactor-mode 1)
+                      (define-key clj-refactor-map (kbd "M-C->") 'cljr-thread)
+                      (define-key clj-refactor-map (kbd "M-C-<") 'cljr-unwind)))))
    (:name diff-hl
           :after (progn (global-diff-hl-mode)))
    (:name exec-path-from-shell
@@ -202,9 +215,9 @@
 
 ;; Font size
 (define-key global-map (kbd "C-+") 'text-scale-increase)
-(define-key global-map (kbd "s-+") 'text-scale-increase)
 (define-key global-map (kbd "C--") 'text-scale-decrease)
-(define-key global-map (kbd "s--") 'text-scale-decrease)
+;(define-key global-map (kbd "s-+") 'text-scale-increase)
+;(define-key global-map (kbd "s--") 'text-scale-decrease)
 
 ;; regex searches with C-M-[s|r]
 (global-set-key (kbd "C-M-s") 'isearch-forward-regexp)
@@ -215,15 +228,15 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default))))
+ '(custom-safe-themes (quote ("1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(clojure-test-error-face ((t (:background "yellow4"))))
- '(clojure-test-failure-face ((t (:background "brown4"))))
+ '(clojure-test-error-face ((t (:background "yellow4"))) t)
+ '(clojure-test-failure-face ((t (:background "brown4"))) t)
  '(vhl/default-face ((t (:background "#6b0000")))))
 
 (when (file-exists-p "~/.emacs.d/user.el")
