@@ -7,7 +7,7 @@
 
 (require 'cl)       ; common lisp goodies, loop
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-(unless (require 'el-get nil t)
+(unless (require 'el-get nil 'noerror)
   (url-retrieve
    ;; nail down version of el-get.
    "https://raw.githubusercontent.com/dimitri/el-get/c827925bd48ac42a16065490ca7c1f1a2d317ea6/el-get-install.el"
@@ -107,6 +107,12 @@
                    (setq ido-everywhere t)
                    (ido-hacks-mode t)
                    (setq ido-save-directory-list-file "~/.ido.last")))
+   (:name js2-mode
+          :website "https://github.com/mooz/js2-mode#readme"
+          :description "An improved JavaScript editing mode"
+          :type github
+          :pkgname "mooz/js2-mode"
+          :prepare (autoload 'js2-mode "js2-mode" nil t))
    (:name magit                        ; git meet emacs, and a binding
           :after (progn
                    (global-set-key (kbd "C-c g") 'magit-status)))
@@ -153,6 +159,14 @@
           :after (progn
                    ;; C-c C-p to enter edit mode in grep view
                    (setq wgrep-auto-save-buffer t)))
+   (:name undo-tree
+          :description "Treat undo history as a tree"
+          :website "http://www.dr-qubit.org/emacs.php"
+          :type github
+					:pkgname "akhayyat/emacs-undo-tree"
+					:checkout "a3e81b682053a81e082139300ef0a913a7a610a2"
+					:after (progn
+									 (global-undo-tree-mode t)))
    (:name volatile-highlights           ; see what you undo'd
           :after (progn
                    (volatile-highlights-mode t)))))
@@ -216,8 +230,8 @@
 ;; Font size
 (define-key global-map (kbd "C-+") 'text-scale-increase)
 (define-key global-map (kbd "C--") 'text-scale-decrease)
-;(define-key global-map (kbd "s-+") 'text-scale-increase)
-;(define-key global-map (kbd "s--") 'text-scale-decrease)
+                                        ;(define-key global-map (kbd "s-+") 'text-scale-increase)
+                                        ;(define-key global-map (kbd "s--") 'text-scale-decrease)
 
 ;; regex searches with C-M-[s|r]
 (global-set-key (kbd "C-M-s") 'isearch-forward-regexp)
