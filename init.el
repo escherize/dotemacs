@@ -1,13 +1,11 @@
-;; Original Author: Dimitri Fontaine <dim@tapoueh.org>
-;; Heavily Edited by: Bryan Maass <bryan.maass@gmail.com>
+;; Author: Bryan Maass <bryan.maass@gmail.com>
 ;; URL: https://github.com/escherize/dotemacs
-;; Keywords: emacs setup el-get kick-start starter-kit clojure
-;; Licence: WTFPL, grab your copy here: http://sam.zoy.org/wtfpl/
-
+;; Keywords: emacs clojure setup el-get
 
 (require 'cl)       ; common lisp goodies, loop
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-(unless (require 'el-get nil 'noerror)
+
+(unless (require 'el-get nil)
   (url-retrieve
    ;; nail down version of el-get.
    "https://raw.githubusercontent.com/dimitri/el-get/c827925bd48ac42a16065490ca7c1f1a2d317ea6/el-get-install.el"
@@ -30,6 +28,7 @@
    (:name color-theme-solarized) ; http://ethanschoonover.com/solarized
    (:name dash)                  ; a dependancy
    (:name pkg-info)              ; a dependancy
+   (:name protobuf-mode)         ; .proto files
    (:name ido-ubiquitous)        ; ido everywhere
    (:name s)                     ; a string library
    (:name yasnippet)             ; powerful snippet mode
@@ -43,9 +42,9 @@
                    (add-hook 'cider-repl-mode-hook 'paredit-mode)
                    (add-hook 'clojure-mode-hook 'cider-mode)
                    (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-                   (setq nrepl-hide-special-buffers t)
+                   (setq nrepl-hide-special-buffers 1)
                    (setq cider-popup-stacktraces nil)
-                   (setq nrepl-buffer-name-show-port t)
+                   (setq nrepl-buffer-name-show-port 1)
                    (setq cider-prompt-save-file-on-load nil)
                    (setq cider-repl-history-size 1000)
                    (setq cider-repl-history-file "~/.emacs.d/cider_repl_hist.txt")))
@@ -81,8 +80,21 @@
             (ido-mode 1)
             (ido-everywhere 1)
             (flx-ido-mode 1)
-            (setq ido-enable-flex-matching t)
-            (setq ido-use-faces nil)))
+            (setq ido-enable-flex-matching 1)
+            (setq ido-use-faces nil)
+            (recentf-mode 1)
+            (defun recentf-ido-find-file ()
+              "Find a recent file using Ido."
+              (interactive)
+              (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
+                (when file
+                  (find-file file))))
+            (global-set-key (kbd "C-x C-r") 'recentf-ido-find-file)))
+   (:name git-timemachine
+          :description "Step through historic versions of git controlled files"
+          :type github
+          :checkout "1.3"
+          :pkgname "pidu/git-timemachine")
    (:name goto-last-change          ; move pointer back to last change
           :after (progn
                    (global-set-key (kbd "C-x C-/") 'goto-last-change)))
@@ -99,13 +111,13 @@
                    (define-globalized-minor-mode global-highlight-parentheses-mode
                      highlight-parentheses-mode
                      (lambda ()
-                       (highlight-parentheses-mode t)))
-                   (global-highlight-parentheses-mode t)))
+                       (highlight-parentheses-mode 1)))
+                   (global-highlight-parentheses-mode 1)))
    (:name ido-hacks
           :after (progn
-                   (ido-mode t)
-                   (setq ido-everywhere t)
-                   (ido-hacks-mode t)
+                   (ido-mode 1)
+                   (setq ido-everywhere 1)
+                   (ido-hacks-mode 1)
                    (setq ido-save-directory-list-file "~/.ido.last")))
    (:name js2-mode
           :website "https://github.com/mooz/js2-mode#readme"
@@ -137,6 +149,7 @@
                    (eval-after-load 'paredit
                      '(define-key paredit-mode-map (kbd "M-q") nil))))
    (:name projectile
+          :description "Project jumping, searching, finding functions"
           :after (progn
                    (projectile-global-mode)
                    (global-set-key (kbd "s-f") 'projectile-find-file)
@@ -163,13 +176,13 @@
           :description "Treat undo history as a tree"
           :website "http://www.dr-qubit.org/emacs.php"
           :type github
-					:pkgname "akhayyat/emacs-undo-tree"
-					:checkout "a3e81b682053a81e082139300ef0a913a7a610a2"
-					:after (progn
-									 (global-undo-tree-mode t)))
+          :pkgname "akhayyat/emacs-undo-tree"
+          :checkout "a3e81b682053a81e082139300ef0a913a7a610a2"
+          :after (progn
+                   (global-undo-tree-mode 1)))
    (:name volatile-highlights           ; see what you undo'd
           :after (progn
-                   (volatile-highlights-mode t)))))
+                   (volatile-highlights-mode 1)))))
 (setq my:el-get-packages '(el-get))
 
 ;; Some recipes require extra tools to be installed
@@ -190,14 +203,14 @@
  ;;;;;;;;;;;;;;;;;;;;;;; end of el-get  ;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq inhibit-splash-screen t)                           ; no splash screen, thanks
+(setq inhibit-splash-screen 1)                           ; no splash screen, thanks
 (line-number-mode 1)                                     ; have line numbers and
 (column-number-mode 1)                                   ; column numbers in the mode line
 (tool-bar-mode -1)                                       ; no tool bar with icons
 (scroll-bar-mode -1)                                     ; no scroll bars
 (global-hl-line-mode)                                    ; highlight current line
 (global-linum-mode 1)                                    ; add line numbers on the left
-(setq x-select-enable-clipboard t)                       ; Use the system clipboard
+(setq x-select-enable-clipboard 1)                       ; Use the system clipboard
 (global-auto-revert-mode 1)                              ; pickup external file changes (i.e. git)
 (setq-default sh-basic-offset 2)                         ; shell
 (setq-default sh-indentation 2)                          ; shell indentation
@@ -208,7 +221,7 @@
 
 ;; Navigate windows with shift-<arrows>
 (windmove-default-keybindings 'shift)
-(setq windmove-wrap-around t)
+(setq windmove-wrap-around 1)
 (unless (string-match "apple-darwin" system-configuration)
   ;; on mac, there's always a menu bar drown, don't have it empty
   (menu-bar-mode -1))
@@ -220,7 +233,7 @@
 
 ;; under mac, have Command as Super and Alt as Meta
 (when (string-match "apple-darwin" system-configuration)
-  (setq mac-allow-anti-aliasing t)
+  (setq mac-allow-anti-aliasing 1)
   (setq mac-command-modifier 'super)
   (setq mac-option-modifier 'meta))
 
@@ -230,8 +243,6 @@
 ;; Font size
 (define-key global-map (kbd "C-+") 'text-scale-increase)
 (define-key global-map (kbd "C--") 'text-scale-decrease)
-                                        ;(define-key global-map (kbd "s-+") 'text-scale-increase)
-                                        ;(define-key global-map (kbd "s--") 'text-scale-decrease)
 
 ;; regex searches with C-M-[s|r]
 (global-set-key (kbd "C-M-s") 'isearch-forward-regexp)
