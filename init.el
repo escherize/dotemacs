@@ -5,7 +5,7 @@
 (require 'cl)       ; common lisp goodies, loop
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 
-(unless (require 'el-get nil)
+(unless (require 'el-get nil t)
   (url-retrieve
    ;; nail down version of el-get.
    "https://raw.githubusercontent.com/dimitri/el-get/c827925bd48ac42a16065490ca7c1f1a2d317ea6/el-get-install.el"
