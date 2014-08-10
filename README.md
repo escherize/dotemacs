@@ -1,26 +1,34 @@
 Bryan's Emacs Config
 ------
 
-# To install:
+# To install on a mac:
 
-1. Clone the repo into ~/.emacs.d:
+1. [Download](http://emacsformacosx.com/) and Install emacs for osx.
+---
+
+
+2. Clone the repo into ~/.emacs.d:
 ----
+
+by copy and pasting the following into your terminal:
 
 ```
 cd ~;
-mv .emacs.d emacs.d_pre_bryan;
+mv .emacs.d emacs.d_pre_escherize;
 git clone git@github.com:escherize/dotemacs.git .emacs.d;
 ```
 
-####Start emacs once, and it will download and install el-get. Once it's downloaded, it will tell you when el-get is ready to serve.
+3. Start emacs.
+---
 
+* Ignore any errors
+* El-get will install itself
+* Once it's and installed, emacs will tell you that el-get is **ready to serve**.
 
-2. Restart emacs
+4. Restart emacs
 ----
 
-#### Now it will download compile and install all the recipes in init.el
+### el-get will now download compile and install all the recipes in init.el
 
-It may take a few minutes. Once this is done you're ready to go!
-
-
+### It should take a few minutes to download (mostly git clone tags), and compile. Once this is done you're ready to go!
 

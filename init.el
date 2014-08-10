@@ -128,6 +128,14 @@
    (:name magit                        ; git meet emacs, and a binding
           :after (progn
                    (global-set-key (kbd "C-c g") 'magit-status)))
+   (:name markdown-mode
+          :description "Major mode to edit Markdown files in Emacs"
+          :website "http://jblevins.org/projects/markdown-mode/"
+          :type github
+          :checkout "v2.0"
+          :pkgname "defunkt/markdown-mode"
+          :prepare (add-to-list 'auto-mode-alist
+                                '("\\.\\(md\\|mdown\\|markdown\\)\\'" . markdown-mode)))
    (:name multiple-cursors
           :after (progn
                    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
