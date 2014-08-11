@@ -1,5 +1,3 @@
-Bryan's Emacs Config
-------
 
 # To install on a mac:
 
