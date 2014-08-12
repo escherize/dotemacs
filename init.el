@@ -2,6 +2,50 @@
 ;; URL: https://github.com/escherize/dotemacs
 ;; Keywords: emacs clojure setup el-get
 
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;  instant setup  ;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq inhibit-splash-screen 1)                           ; no splash screen, thanks
+(line-number-mode 1)                                     ; have line numbers and
+(column-number-mode 1)                                   ; column numbers in the mode line
+(tool-bar-mode -1)                                       ; no tool bar with icons
+(scroll-bar-mode -1)                                     ; no scroll bars
+(global-hl-line-mode)                                    ; highlight current line
+(global-linum-mode 1)                                    ; add line numbers on the left
+(setq x-select-enable-clipboard 1)                       ; Use the system clipboard
+(global-auto-revert-mode 1)                              ; pickup external file changes (i.e. git)
+(setq-default sh-basic-offset 2)                         ; shell
+(setq-default sh-indentation 2)                          ; shell indentation
+(setq-default tab-width 2)                               ; Tab width of 2
+(fset 'yes-or-no-p 'y-or-n-p)                            ; enable y/n answers
+(setq initial-scratch-message "")                        ; empty scratch message
+(setq ring-bell-function (lambda () (message "*beep*"))) ; dont beep outloud, thats rude.
+
+;; Navigate windows with shift-<arrows>
+(windmove-default-keybindings 'shift)
+(setq windmove-wrap-around 1)
+
+(unless (string-match "apple-darwin" system-configuration)
+  ;; on mac, there's always a menu bar drown, don't have it empty
+  (menu-bar-mode -1))
+
+;; choose your own fonts, in a system dependant way
+(if (string-match "apple-darwin" system-configuration)
+    (set-face-font 'default "Monaco-13")
+  (set-face-font 'default "Monospace-10"))
+
+;; under mac, have Command as Super and Alt as Meta
+(when (string-match "apple-darwin" system-configuration)
+  (setq mac-allow-anti-aliasing 1)
+  (setq mac-command-modifier 'super)
+  (setq mac-option-modifier 'meta))
+
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;  el-get  ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 (require 'cl)       ; common lisp goodies, loop
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 
@@ -210,40 +254,6 @@
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;; end of el-get  ;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(setq inhibit-splash-screen 1)                           ; no splash screen, thanks
-(line-number-mode 1)                                     ; have line numbers and
-(column-number-mode 1)                                   ; column numbers in the mode line
-(tool-bar-mode -1)                                       ; no tool bar with icons
-(scroll-bar-mode -1)                                     ; no scroll bars
-(global-hl-line-mode)                                    ; highlight current line
-(global-linum-mode 1)                                    ; add line numbers on the left
-(setq x-select-enable-clipboard 1)                       ; Use the system clipboard
-(global-auto-revert-mode 1)                              ; pickup external file changes (i.e. git)
-(setq-default sh-basic-offset 2)                         ; shell
-(setq-default sh-indentation 2)                          ; shell indentation
-(setq-default tab-width 2)                               ; Tab width of 2
-(fset 'yes-or-no-p 'y-or-n-p)                            ; enable y/n answers
-(setq initial-scratch-message "")                        ; empty scratch message
-(setq ring-bell-function (lambda () (message "*beep*"))) ; dont beep outloud, thats rude.
-
-;; Navigate windows with shift-<arrows>
-(windmove-default-keybindings 'shift)
-(setq windmove-wrap-around 1)
-(unless (string-match "apple-darwin" system-configuration)
-  ;; on mac, there's always a menu bar drown, don't have it empty
-  (menu-bar-mode -1))
-
-;; choose your own fonts, in a system dependant way
-(if (string-match "apple-darwin" system-configuration)
-    (set-face-font 'default "Monaco-13")
-  (set-face-font 'default "Monospace-10"))
-
-;; under mac, have Command as Super and Alt as Meta
-(when (string-match "apple-darwin" system-configuration)
-  (setq mac-allow-anti-aliasing 1)
-  (setq mac-command-modifier 'super)
-  (setq mac-option-modifier 'meta))
 
 ;; Save here instead of littering current directory with emacs backup files
 (setq backup-directory-alist `(("." . "~/.saves")))
