@@ -177,7 +177,7 @@
           :website "http://jblevins.org/projects/markdown-mode/"
           :type github
           :checkout "v2.0"
-          :pkgname "defunkt/markdown-mode"
+          :pkgname "defunkt/markdown-mode" ;mirror of jblevins
           :prepare (add-to-list 'auto-mode-alist
                                 '("\\.\\(md\\|mdown\\|markdown\\)\\'" . markdown-mode)))
    (:name multiple-cursors
@@ -185,6 +185,27 @@
                    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
                    (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
                    (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)))
+   (:name org-mode
+          :website "http://orgmode.org/"
+          :description "Org-mode is for keeping notes, maintaining ToDo lists, doing project planning, and authoring with a fast and effective plain-text system."
+          :type git
+          :url "git://orgmode.org/org-mode.git"
+          :info "doc"
+          :build/berkeley-unix `,(mapcar
+                                  (lambda (target)
+                                    (list "gmake" target (concat "EMACS=" (shell-quote-argument el-get-emacs))))
+                                  '("oldorg"))
+          :build `,(mapcar
+                    (lambda (target)
+                      (list "make" target (concat "EMACS=" (shell-quote-argument el-get-emacs))))
+                    '("oldorg"))
+          :load-path ("." "contrib/lisp" "lisp")
+          :load ("lisp/org-loaddefs.el")
+          :after (progn
+                   (defun notes () "Switch to notes dir."
+                     (interactive)
+                     (ido-find-file-in-dir "~/notes"))
+									 (setq org-startup-indented t)))
    (:name paredit                       ; balance parens
           :after (progn
                    (autoload 'enable-paredit-mode "paredit"
@@ -265,6 +286,23 @@
 ;; regex searches with C-M-[s|r]
 (global-set-key (kbd "C-M-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-M-r") 'isearch-backward-regexp)
+
+(defun save-macro (name)
+  "save a macro. Take a name as argument
+   and save the last defined macro under
+   this name at the end of your .emacs"
+  (interactive "SName of the macro: ")
+  (kmacro-name-last-macro name)
+  (find-file "~/.emacs.d/core.el") ;; user-init-file
+  (goto-char (point-max))
+  (newline)
+  (insert-kbd-macro name)
+  (newline)
+  (switch-to-buffer nil))
+
+(defun date ()
+  (interactive)
+  (insert (format-time-string "%a, %b %e, %Y")))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
