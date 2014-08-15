@@ -6,21 +6,23 @@
  ;;;;;;;;;;;;;;;;;;;;;;  instant setup  ;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq inhibit-splash-screen 1)                           ; no splash screen, thanks
-(line-number-mode 1)                                     ; have line numbers and
-(column-number-mode 1)                                   ; column numbers in the mode line
-(tool-bar-mode -1)                                       ; no tool bar with icons
-(scroll-bar-mode -1)                                     ; no scroll bars
-(global-hl-line-mode)                                    ; highlight current line
-(global-linum-mode 1)                                    ; add line numbers on the left
-(setq x-select-enable-clipboard 1)                       ; Use the system clipboard
-(global-auto-revert-mode 1)                              ; pickup external file changes (i.e. git)
-(setq-default sh-basic-offset 2)                         ; shell
-(setq-default sh-indentation 2)                          ; shell indentation
-(setq-default tab-width 2)                               ; Tab width of 2
-(fset 'yes-or-no-p 'y-or-n-p)                            ; enable y/n answers
-(setq initial-scratch-message "")                        ; empty scratch message
-(setq ring-bell-function (lambda () (message "*beep*"))) ; dont beep outloud, thats rude.
+(setq inhibit-splash-screen 1)          ; no splash screen, thanks
+(line-number-mode 1)                    ; have line numbers and
+(column-number-mode 1)                  ; column numbers in the mode line
+(tool-bar-mode -1)                      ; no tool bar with icons
+(scroll-bar-mode -1)                    ; no scroll bars
+(global-hl-line-mode)                   ; highlight current line
+(global-linum-mode 1)                   ; add line numbers on the left
+(setq x-select-enable-clipboard 1)      ; Use the system clipboard
+(global-auto-revert-mode 1)             ; pickup external file changes (i.e. git)
+(setq-default sh-basic-offset 2)        ; shell
+(setq-default sh-indentation 2)         ; shell indentation
+(setq-default tab-width 2)              ; Tab width of 2
+(fset 'yes-or-no-p 'y-or-n-p)           ; enable y/n answers
+(setq initial-scratch-message "")       ; empty scratch message
+(setq ring-bell-function
+      (lambda () (message "*beep*")))   ; dont beep outloud, thats rude.
+(setq auto-window-vscroll nil)          ; better scrolling
 
 ;; Navigate windows with shift-<arrows>
 (windmove-default-keybindings 'shift)
@@ -81,7 +83,7 @@
    (:name cider
           :type github
           :pkgname "clojure-emacs/cider"
-          :checkout "v0.7.0"
+          :checkout "v0.6.0"
           :after (progn
                    (add-hook 'cider-repl-mode-hook 'paredit-mode)
                    (add-hook 'clojure-mode-hook 'cider-mode)
@@ -134,6 +136,13 @@
                 (when file
                   (find-file file))))
             (global-set-key (kbd "C-x C-r") 'recentf-ido-find-file)))
+   (:name gist
+          :type github
+          :pkgname "defunkt/gist.el"
+          :checkout "v1.1.0"
+          :depends (gh tabulated-list)
+          :description "Emacs integration for gist.github.com"
+          :website "http://github.com/defunkt/gist.el")
    (:name git-timemachine
           :description "Step through historic versions of git controlled files"
           :type github
@@ -172,7 +181,7 @@
                                    (time-less-p
                                     (sixth (file-attributes (concat ido-current-directory b)))
                                     (sixth (file-attributes (concat ido-current-directory a)))))))
-                     (ido-to-end  ;; move . files to end (again)
+                     (ido-to-end
                       (delq nil (mapcar
                                  (lambda (x) (and (string-match-p "^\\.." x) x))
                                  ido-temp-list))))))
@@ -245,6 +254,12 @@
    (:name rainbow-delimiters            ; pretty and useful
           :after (progn
                    (global-rainbow-delimiters-mode)))
+   (:name rainbow-mode
+          :description "Colorize color names in buffers"
+					:type github
+					:checkout "2298c419aec2a6cac85f94e9627fec4c0d373c5f"
+					:pkgname "emacsmirror/rainbow-mode"
+          :type elpa)
    (:name smex
           :after (progn
                    (smex-auto-update nil)
@@ -306,7 +321,7 @@
    this name at the end of your .emacs"
   (interactive "SName of the macro: ")
   (kmacro-name-last-macro name)
-  (find-file "~/.emacs.d/core.el") ;; user-init-file
+  (find-file "~/.emacs.d/user.el") ;; user-init-file
   (goto-char (point-max))
   (newline)
   (insert-kbd-macro name)
