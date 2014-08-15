@@ -244,11 +244,7 @@
    (:name projectile
           :description "Project jumping, searching, finding functions"
           :after (progn
-                   (projectile-global-mode)
-                   (global-set-key (kbd "s-f") 'projectile-find-file)
-                   (global-set-key (kbd "s-g") 'projectile-grep)
-                   (global-set-key (kbd "s-a") 'projectile-ack)
-                   (global-set-key (kbd "s-p") 'projectile-switch-project)))
+                   (projectile-global-mode)))
    (:name rainbow-delimiters            ; pretty and useful
           :after (progn
                    (global-rainbow-delimiters-mode)))
