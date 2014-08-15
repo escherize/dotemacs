@@ -155,12 +155,10 @@
           :after (progn
                    (setq hl-paren-colors
                          '("black" "black" "black"
-                           "black" "black" "black"
-                           "black"))
+                           "black" "black" "black"))
                    (setq hl-paren-background-colors
-                         '("#dc322f" "#cb4b16" "#b58900"
-                           "#859900" "#2aa198" "#268bd2"
-                           "#d33682"))
+                         '("#2aa198" "#268bd2" "#d33682" 
+													 "#cb4b16" "#b58900" "#859900"))
                    (define-globalized-minor-mode global-highlight-parentheses-mode
                      highlight-parentheses-mode
                      (lambda ()
