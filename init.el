@@ -2,9 +2,9 @@
 ;; URL: https://github.com/escherize/dotemacs
 ;; Keywords: emacs clojure setup el-get
 
- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- ;;;;;;;;;;;;;;;;;;;;;;  instant setup  ;;;;;;;;;;;;;;;;;;;;;;;
- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;; Sensable Builtins ;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq inhibit-splash-screen 1)          ; no splash screen, thanks
 (line-number-mode 1)                    ; have line numbers and
@@ -23,13 +23,17 @@
 (setq ring-bell-function
       (lambda () (message "*beep*")))   ; dont beep outloud, thats rude.
 (setq auto-window-vscroll nil)          ; better scrolling
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 ;; Navigate windows with shift-<arrows>
 (windmove-default-keybindings 'shift)
 (setq windmove-wrap-around 1)
 
 (unless (string-match "apple-darwin" system-configuration)
-  ;; on mac, there's always a menu bar drown, don't have it empty
+  ;; on mac, there's always a menu bar drawn, don't have it empty
   (menu-bar-mode -1))
 
 ;; choose your own fonts, in a system dependant way
@@ -43,10 +47,10 @@
   (setq mac-command-modifier 'super)
   (setq mac-option-modifier 'meta))
 
+
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;  el-get  ;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 (require 'cl)       ; common lisp goodies, loop
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -143,6 +147,10 @@
           :depends (gh tabulated-list)
           :description "Emacs integration for gist.github.com"
           :website "http://github.com/defunkt/gist.el")
+   (:name github-browse-file
+          :type github
+          :pkgname "osener/github-browse-file"
+          :checkout "1478670dfa1f6925d75b520f10f35feb1e6f2f2c")
    (:name git-timemachine
           :description "Step through historic versions of git controlled files"
           :type github
@@ -151,14 +159,24 @@
    (:name goto-last-change          ; move pointer back to last change
           :after (progn
                    (global-set-key (kbd "C-x C-/") 'goto-last-change)))
+   (:name highlight-symbol
+          :description "Quickly highlight a symbol throughout the buffer and cycle through its locations."
+          :type github
+          :pkgname "nschum/highlight-symbol.el"
+          :checkout "1.2"
+          :after (progn
+                   (global-set-key [(control f3)] 'highlight-symbol-at-point)
+                   (global-set-key [f3] 'highlight-symbol-next)
+                   (global-set-key [(shift f3)] 'highlight-symbol-prev)
+                   (global-set-key [(meta f3)] 'highlight-symbol-query-replace)))
    (:name highlight-parentheses
           :after (progn
                    (setq hl-paren-colors
                          '("black" "black" "black"
                            "black" "black" "black"))
                    (setq hl-paren-background-colors
-                         '("#2aa198" "#268bd2" "#d33682" 
-													 "#cb4b16" "#b58900" "#859900"))
+                         '("#2aa198" "#268bd2" "#d33682"
+                           "#cb4b16" "#b58900" "#859900"))
                    (define-globalized-minor-mode global-highlight-parentheses-mode
                      highlight-parentheses-mode
                      (lambda ()
@@ -224,8 +242,7 @@
           :after (progn
                    (defun notes () "Switch to notes dir."
                      (interactive)
-                     (ido-find-file-in-dir "~/notes"))
-                   (setq org-startup-indented t)))
+                     (ido-find-file-in-dir "~/notes"))))
    (:name paredit                       ; balance parens
           :after (progn
                    (autoload 'enable-paredit-mode "paredit"
@@ -250,9 +267,9 @@
                    (global-rainbow-delimiters-mode)))
    (:name rainbow-mode
           :description "Colorize color names in buffers"
-					:type github
-					:checkout "2298c419aec2a6cac85f94e9627fec4c0d373c5f"
-					:pkgname "emacsmirror/rainbow-mode"
+          :type github
+          :checkout "2298c419aec2a6cac85f94e9627fec4c0d373c5f"
+          :pkgname "emacsmirror/rainbow-mode"
           :type elpa)
    (:name smex
           :after (progn
