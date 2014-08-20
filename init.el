@@ -187,20 +187,7 @@
                    (ido-mode 1)
                    (setq ido-everywhere 1)
                    (ido-hacks-mode 1)
-                   (setq ido-save-directory-list-file "~/.ido.last")
-                   (add-hook 'ido-make-file-list-hook 'ido-sort-mtime)
-                   (add-hook 'ido-make-dir-list-hook 'ido-sort-mtime)
-                   (defun ido-sort-mtime () ;;sort ido by time!! A+
-                     (setq ido-temp-list
-                           (sort ido-temp-list
-                                 (lambda (a b)
-                                   (time-less-p
-                                    (sixth (file-attributes (concat ido-current-directory b)))
-                                    (sixth (file-attributes (concat ido-current-directory a)))))))
-                     (ido-to-end
-                      (delq nil (mapcar
-                                 (lambda (x) (and (string-match-p "^\\.." x) x))
-                                 ido-temp-list))))))
+                   (setq ido-save-directory-list-file "~/.ido.last")))
    (:name js2-mode
           :website "https://github.com/mooz/js2-mode#readme"
           :description "An improved JavaScript editing mode"
