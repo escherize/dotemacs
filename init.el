@@ -121,6 +121,12 @@
    (:name expand-region
           :after (progn
                    (global-set-key (kbd "C-=") 'er/expand-region)))
+   (:name floobits
+          :website "https://floobits.com"
+          :description "Remote pair programming done right"
+          :type github
+          :checkout "1.5.9"
+          :pkgname "Floobits/floobits-emacs")
    (:name flx
           :type github
           :pkgname "lewang/flx"
@@ -210,6 +216,13 @@
                    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
                    (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
                    (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)))
+	 (:name neotree
+       :website "https://github.com/jaypei/emacs-neotree"
+       :description "An Emacs tree plugin like NerdTree for Vim."
+       :type github
+			 :checkout "0.2"
+       :pkgname "jaypei/emacs-neotree"
+			 :after (progn (global-set-key [f8] 'neotree-toggle)))
    (:name org-mode
           :website "http://orgmode.org/"
           :description "Org-mode is for keeping notes, maintaining ToDo lists, doing project planning, and authoring with a fast and effective plain-text system."
@@ -330,6 +343,13 @@
   (interactive)
   (insert (format-time-string "%a, %b %e, %Y")))
 
+(defun stand ()
+	(interactive)
+  (find-file 
+	 (concat "~/notes/standup" 
+					 (format-time-string "-%e-%m-%Y")
+					 ".org")))
+(global-set-key [f9] 'stand)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
