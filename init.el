@@ -75,7 +75,6 @@
    (:name align-cljlet)          ; align clojure lets..
    (:name auto-complete)         ; complete as you type with overlays
    (:name color-theme)           ; color themes
-   (:name color-theme-solarized) ; http://ethanschoonover.com/solarized
    (:name dash)                  ; a dependancy
    (:name pkg-info)              ; a dependancy
    (:name protobuf-mode)         ; .proto files
@@ -92,6 +91,7 @@
                    (add-hook 'cider-repl-mode-hook 'paredit-mode)
                    (add-hook 'clojure-mode-hook 'cider-mode)
                    (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+                   (setq cider-repl-pop-to-buffer-on-connect nil)
                    (setq nrepl-hide-special-buffers 1)
                    (setq cider-popup-stacktraces nil)
                    (setq nrepl-buffer-name-show-port 1)
@@ -112,6 +112,19 @@
                       (clj-refactor-mode 1)
                       (define-key clj-refactor-map (kbd "M-C->") 'cljr-thread)
                       (define-key clj-refactor-map (kbd "M-C-<") 'cljr-unwind)))))
+   (:name color-theme-solarized
+          :description "Emacs highlighting using Ethan Schoonover's Solarized color scheme"
+          :type github
+          :pkgname "sellout/emacs-color-theme-solarized"
+          :depends color-theme
+					:checkout "6a2c7ca0181585858e6e8054cb99db837e2ef72f"
+          :prepare (progn
+                     (add-to-list 'custom-theme-load-path default-directory)
+                     (autoload 'color-theme-solarized-light "color-theme-solarized"
+                       "color-theme: solarized-light" t)
+                     (autoload 'color-theme-solarized-dark "color-theme-solarized"
+                       "color-theme: solarized-dark" t)))
+
    (:name diff-hl
           :after (progn (global-diff-hl-mode)))
    (:name exec-path-from-shell
@@ -216,13 +229,13 @@
                    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
                    (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
                    (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)))
-	 (:name neotree
-       :website "https://github.com/jaypei/emacs-neotree"
-       :description "An Emacs tree plugin like NerdTree for Vim."
-       :type github
-			 :checkout "0.2"
-       :pkgname "jaypei/emacs-neotree"
-			 :after (progn (global-set-key [f8] 'neotree-toggle)))
+   (:name neotree
+          :website "https://github.com/jaypei/emacs-neotree"
+          :description "An Emacs tree plugin like NerdTree for Vim."
+          :type github
+          :checkout "0.2"
+          :pkgname "jaypei/emacs-neotree"
+          :after (progn (global-set-key [f8] 'neotree-toggle)))
    (:name org-mode
           :website "http://orgmode.org/"
           :description "Org-mode is for keeping notes, maintaining ToDo lists, doing project planning, and authoring with a fast and effective plain-text system."
@@ -344,11 +357,11 @@
   (insert (format-time-string "%a, %b %e, %Y")))
 
 (defun stand ()
-	(interactive)
-  (find-file 
-	 (concat "~/notes/standup" 
-					 (format-time-string "-%e-%m-%Y")
-					 ".org")))
+  (interactive)
+  (find-file
+   (concat "~/notes/standup"
+           (format-time-string "-%e-%m-%Y")
+           ".org")))
 (global-set-key [f9] 'stand)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -365,9 +378,10 @@
  '(clojure-test-error-face ((t (:background "yellow4"))) t)
  '(clojure-test-failure-face ((t (:background "brown4"))) t)
  '(vhl/default-face ((t (:background "#6b0000")))))
-
-(when (file-exists-p "~/.emacs.d/user.el")
-  (load (expand-file-name "~/.emacs.d/user.el")))
+;; get bg color: (face-attribute 'default :background)
 
 ;; one must load themes only after they're declared safe!
 (load-theme 'solarized-dark)
+
+(when (file-exists-p "~/.emacs.d/user.el")
+  (load (expand-file-name "~/.emacs.d/user.el")))
