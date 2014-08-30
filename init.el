@@ -71,7 +71,6 @@
  el-get-sources
  '(
    ;; General
-   (:name ack-and-a-half)        ; for ack-in-project: s-a
    (:name align-cljlet)          ; align clojure lets..
    (:name auto-complete)         ; complete as you type with overlays
    (:name color-theme)           ; color themes
@@ -86,7 +85,7 @@
    (:name cider
           :type github
           :pkgname "clojure-emacs/cider"
-          :checkout "v0.6.0"
+          :checkout "v0.7.0"
           :after (progn
                    (add-hook 'cider-repl-mode-hook 'paredit-mode)
                    (add-hook 'clojure-mode-hook 'cider-mode)
@@ -117,7 +116,7 @@
           :type github
           :pkgname "sellout/emacs-color-theme-solarized"
           :depends color-theme
-					:checkout "6a2c7ca0181585858e6e8054cb99db837e2ef72f"
+          :checkout "6a2c7ca0181585858e6e8054cb99db837e2ef72f"
           :prepare (progn
                      (add-to-list 'custom-theme-load-path default-directory)
                      (autoload 'color-theme-solarized-light "color-theme-solarized"
@@ -178,6 +177,11 @@
    (:name goto-last-change          ; move pointer back to last change
           :after (progn
                    (global-set-key (kbd "C-x C-/") 'goto-last-change)))
+   (:name hl-sexp
+          :description "Highlight the current sexp"
+          :type http
+          :url "http://edward.oconnor.cx/elisp/hl-sexp.el"
+          :features hl-sexp)
    (:name highlight-symbol
           :description "Quickly highlight a symbol throughout the buffer and cycle through its locations."
           :type github
