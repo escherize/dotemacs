@@ -294,6 +294,14 @@
                    (setq smex-save-file "~/.emacs.d/.smex-items")
                    (global-set-key (kbd "M-x") 'smex)
                    (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
+   (:name switch-window
+          :description "A *visual* way to choose a window to switch to"
+          :type github
+          :pkgname "dimitri/switch-window"
+          :checkout "453fbc74c07479ef46e3449ee8432231a9537a8f"
+          :features switch-window
+          :after (progn
+                   (global-set-key (kbd "C-x o") 'switch-window)))
    (:name wgrep
           :type github
           :pkgname "mhayashi1120/Emacs-wgrep"
