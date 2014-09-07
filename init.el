@@ -174,7 +174,7 @@
           :type github
           :checkout "1.3"
           :pkgname "pidu/git-timemachine")
-   (:name goto-last-change          ; move pointer back to last change
+   (:name goto-last-change  ;; move pointer back to last change
           :after (progn
                    (global-set-key (kbd "C-x C-/") 'goto-last-change)))
    (:name hl-sexp
@@ -260,7 +260,7 @@
                    (defun notes () "Switch to notes dir."
                      (interactive)
                      (ido-find-file-in-dir "~/notes"))))
-   (:name paredit                       ; balance parens
+   (:name paredit    ;; balance parens
           :after (progn
                    (autoload 'enable-paredit-mode "paredit"
                      "Turn on pseudo-structural editing of Lisp code." t)
@@ -317,7 +317,7 @@
           :checkout "a3e81b682053a81e082139300ef0a913a7a610a2"
           :after (progn
                    (global-undo-tree-mode 1)))
-   (:name volatile-highlights           ; see what you undo'd
+   (:name volatile-highlights ;; see what you undo'd
           :after (progn
                    (volatile-highlights-mode 1)))))
 (setq my:el-get-packages '(el-get))
