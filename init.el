@@ -23,6 +23,8 @@
 (setq ring-bell-function
       (lambda () (message "*beep*")))   ; dont beep outloud, thats rude.
 (setq auto-window-vscroll nil)          ; better scrolling
+(global-hl-line-mode -1)                ; do not highlight line at point
+
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
@@ -82,10 +84,16 @@
    (:name yasnippet)             ; powerful snippet mode
    ;; Requires No Setup ^^^^
    ;; Requires Setup vvvvvvv
+   (:name ag
+          :description "A simple ag frontend, loosely based on ack-and-half.el."
+          :type github
+          :checkout "0.44"
+          :pkgname "Wilfred/ag.el")
+
    (:name cider
           :type github
           :pkgname "clojure-emacs/cider"
-          :checkout "v0.7.0"
+          :checkout "v0.6.0"
           :after (progn
                    (add-hook 'cider-repl-mode-hook 'paredit-mode)
                    (add-hook 'clojure-mode-hook 'cider-mode)
@@ -97,13 +105,18 @@
                    (setq cider-prompt-save-file-on-load nil)
                    (setq cider-repl-history-size 1000)
                    (setq cider-repl-history-file "~/.emacs.d/cider_repl_hist.txt")))
+
    (:name clj-refactor
           :description "A collection of simple clojure refactoring functions"
           :type github
           :checkout "0.12.0"
           :depends (dash s clojure-mode yasnippet paredit multiple-cursors)
           :pkgname "magnars/clj-refactor.el")
-   (:name clojure-mode             ; clojure
+
+   (:name clojure-mode
+          :type github
+          :pkgname "clojure-emacs/clojure-mode"
+          :checkout "3.0.0"
           :after (progn
                    (add-hook
                     'clojure-mode-hook
@@ -111,6 +124,7 @@
                       (clj-refactor-mode 1)
                       (define-key clj-refactor-map (kbd "M-C->") 'cljr-thread)
                       (define-key clj-refactor-map (kbd "M-C-<") 'cljr-unwind)))))
+
    (:name color-theme-solarized
           :description "Emacs highlighting using Ethan Schoonover's Solarized color scheme"
           :type github
@@ -126,19 +140,23 @@
 
    (:name diff-hl
           :after (progn (global-diff-hl-mode)))
+
    (:name exec-path-from-shell
           :after (progn
                    (when (memq window-system '(mac ns))
                      (exec-path-from-shell-initialize))))
+
    (:name expand-region
           :after (progn
                    (global-set-key (kbd "C-=") 'er/expand-region)))
+
    (:name floobits
           :website "https://floobits.com"
           :description "Remote pair programming done right"
           :type github
           :checkout "1.5.9"
           :pkgname "Floobits/floobits-emacs")
+
    (:name flx
           :type github
           :pkgname "lewang/flx"
@@ -158,6 +176,7 @@
                 (when file
                   (find-file file))))
             (global-set-key (kbd "C-x C-r") 'recentf-ido-find-file)))
+
    (:name gist
           :type github
           :pkgname "defunkt/gist.el"
@@ -165,10 +184,20 @@
           :depends (gh tabulated-list)
           :description "Emacs integration for gist.github.com"
           :website "http://github.com/defunkt/gist.el")
+
    (:name github-browse-file
           :type github
           :pkgname "osener/github-browse-file"
           :checkout "1478670dfa1f6925d75b520f10f35feb1e6f2f2c")
+
+   (:name git-messenger
+          :description "Pops up commit messages at current line"
+          :type github
+          :pkgname "syohex/emacs-git-messenger"
+          :depends (popup)
+          :after (progn
+                   (global-set-key (kbd "C-x v p") 'git-messenger:popup-message)))
+
    (:name git-timemachine
           :description "Step through historic versions of git controlled files"
           :type github
@@ -177,11 +206,13 @@
    (:name goto-last-change  ;; move pointer back to last change
           :after (progn
                    (global-set-key (kbd "C-x C-/") 'goto-last-change)))
+
    (:name hl-sexp
           :description "Highlight the current sexp"
           :type http
           :url "http://edward.oconnor.cx/elisp/hl-sexp.el"
           :features hl-sexp)
+
    (:name highlight-symbol
           :description "Quickly highlight a symbol throughout the buffer and cycle through its locations."
           :type github
@@ -192,6 +223,7 @@
                    (global-set-key [f3] 'highlight-symbol-next)
                    (global-set-key [(shift f3)] 'highlight-symbol-prev)
                    (global-set-key [(meta f3)] 'highlight-symbol-query-replace)))
+
    (:name highlight-parentheses
           :after (progn
                    (setq hl-paren-colors
@@ -205,21 +237,25 @@
                      (lambda ()
                        (highlight-parentheses-mode 1)))
                    (global-highlight-parentheses-mode 1)))
+
    (:name ido-hacks
           :after (progn
                    (ido-mode 1)
                    (setq ido-everywhere 1)
                    (ido-hacks-mode 1)
                    (setq ido-save-directory-list-file "~/.ido.last")))
+
    (:name js2-mode
           :website "https://github.com/mooz/js2-mode#readme"
           :description "An improved JavaScript editing mode"
           :type github
           :pkgname "mooz/js2-mode"
           :prepare (autoload 'js2-mode "js2-mode" nil t))
+
    (:name magit                        ; git meet emacs, and a binding
           :after (progn
                    (global-set-key (kbd "C-c g") 'magit-status)))
+
    (:name markdown-mode
           :description "Major mode to edit Markdown files in Emacs"
           :website "http://jblevins.org/projects/markdown-mode/"
@@ -228,6 +264,7 @@
           :pkgname "defunkt/markdown-mode" ;mirror of jblevins
           :prepare (add-to-list 'auto-mode-alist
                                 '("\\.\\(md\\|mdown\\|markdown\\)\\'" . markdown-mode)))
+
    (:name multiple-cursors
           :after (progn
                    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
@@ -236,10 +273,11 @@
    (:name neotree
           :website "https://github.com/jaypei/emacs-neotree"
           :description "An Emacs tree plugin like NerdTree for Vim."
-          :type github
-          :checkout "0.2"
-          :pkgname "jaypei/emacs-neotree"
-          :after (progn (global-set-key [f8] 'neotree-toggle)))
+					:type github
+					:checkout "0.2"
+					:pkgname "jaypei/emacs-neotree"
+					:after (progn (global-set-key [f8] 'neotree-toggle)))
+
    (:name org-mode
           :website "http://orgmode.org/"
           :description "Org-mode is for keeping notes, maintaining ToDo lists, doing project planning, and authoring with a fast and effective plain-text system."
@@ -275,33 +313,39 @@
                    (global-set-key (kbd "M-q") 'bry-indent-buffer)
                    (eval-after-load 'paredit
                      '(define-key paredit-mode-map (kbd "M-q") nil))))
+   (:name popup
+          :website "https://github.com/auto-complete/popup-el"
+          :description "Visual Popup Interface Library for Emacs"
+          :type github
+          :submodule nil
+          :pkgname "auto-complete/popup-el")
+
    (:name projectile
+          :type github
+          :pkgname
+          :checkout "v0.11.0"
           :description "Project jumping, searching, finding functions"
           :after (progn
                    (projectile-global-mode)))
+
    (:name rainbow-delimiters            ; pretty and useful
           :after (progn
                    (global-rainbow-delimiters-mode)))
+
    (:name rainbow-mode
           :description "Colorize color names in buffers"
           :type github
           :checkout "2298c419aec2a6cac85f94e9627fec4c0d373c5f"
           :pkgname "emacsmirror/rainbow-mode"
           :type elpa)
+
    (:name smex
           :after (progn
                    (smex-auto-update nil)
                    (setq smex-save-file "~/.emacs.d/.smex-items")
                    (global-set-key (kbd "M-x") 'smex)
                    (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
-   (:name switch-window
-          :description "A *visual* way to choose a window to switch to"
-          :type github
-          :pkgname "dimitri/switch-window"
-          :checkout "453fbc74c07479ef46e3449ee8432231a9537a8f"
-          :features switch-window
-          :after (progn
-                   (global-set-key (kbd "C-x o") 'switch-window)))
+
    (:name wgrep
           :type github
           :pkgname "mhayashi1120/Emacs-wgrep"
@@ -309,6 +353,7 @@
           :after (progn
                    ;; C-c C-p to enter edit mode in grep view
                    (setq wgrep-auto-save-buffer t)))
+
    (:name undo-tree
           :description "Treat undo history as a tree"
           :website "http://www.dr-qubit.org/emacs.php"
@@ -354,7 +399,7 @@
 (defun save-macro (name)
   "save a macro. Take a name as argument
    and save the last defined macro under
-   this name at the end of your .emacs"
+   this name at the end of your user.el"
   (interactive "SName of the macro: ")
   (kmacro-name-last-macro name)
   (find-file "~/.emacs.d/user.el") ;; user-init-file
@@ -372,8 +417,9 @@
   (interactive)
   (find-file
    (concat "~/notes/standup"
-           (format-time-string "-%e-%m-%Y")
+           (format-time-string "-%Y-%m-%d")
            ".org")))
+
 (global-set-key [f9] 'stand)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
