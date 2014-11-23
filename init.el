@@ -264,7 +264,17 @@
           :pkgname "defunkt/markdown-mode" ;mirror of jblevins
           :prepare (add-to-list 'auto-mode-alist
                                 '("\\.\\(md\\|mdown\\|markdown\\)\\'" . markdown-mode)))
-
+   (:name moe-theme
+          :type github
+          :checkout "cf4686e2ad5c3e8d8629446c8f1d77442f3e1a12"
+          :pkgname "kuanyui/moe-theme.el" ;mirror of jblevins
+          :after (progn
+                   (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/moe-theme/moe-theme.el/")
+                   (add-to-list 'load-path "~/.emacs.d/el-get/moe-theme/moe-theme.el/")
+                   (setq moe-theme-resize-markdown-title '(2.0 1.7 1.5 1.3 1.0 1.0))
+                   (setq moe-theme-resize-org-title '(2.0 1.5 1.2 1.1 1.0 1.0 1.0 1.0 1.0))
+                   (require 'moe-theme)
+                   (moe-theme-set-color 'red)))
    (:name multiple-cursors
           :after (progn
                    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
@@ -273,10 +283,10 @@
    (:name neotree
           :website "https://github.com/jaypei/emacs-neotree"
           :description "An Emacs tree plugin like NerdTree for Vim."
-					:type github
-					:checkout "0.2"
-					:pkgname "jaypei/emacs-neotree"
-					:after (progn (global-set-key [f8] 'neotree-toggle)))
+          :type github
+          :checkout "0.2"
+          :pkgname "jaypei/emacs-neotree"
+          :after (progn (global-set-key [f8] 'neotree-toggle)))
 
    (:name org-mode
           :website "http://orgmode.org/"
@@ -296,8 +306,8 @@
           :load ("lisp/org-loaddefs.el")
           :after (progn
                    (defun notes () "Switch to notes dir."
-                     (interactive)
-                     (ido-find-file-in-dir "~/notes"))))
+                          (interactive)
+                          (ido-find-file-in-dir "~/notes"))))
    (:name paredit    ;; balance parens
           :after (progn
                    (autoload 'enable-paredit-mode "paredit"
@@ -426,7 +436,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default))))
+ '(custom-safe-themes
+	 (quote
+		("7fde61efa16011b294db1448de9e0ae45d602ae949a640164bce6fece4420e90" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -439,7 +451,7 @@
 ;; get bg color: (face-attribute 'default :background)
 
 ;; one must load themes only after they're declared safe!
-(load-theme 'solarized-dark)
+(load-theme 'moe-dark)
 
 (when (file-exists-p "~/.emacs.d/user.el")
   (load (expand-file-name "~/.emacs.d/user.el")))
