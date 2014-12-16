@@ -342,12 +342,13 @@
           :pkgname
           :checkout "v0.11.0"
           :description "Project jumping, searching, finding functions"
-          :after (progn
-                   (projectile-global-mode)))
+          ;; :after (progn
+          ;;          (projectile-global-mode))
+					)
 
-   (:name rainbow-delimiters            ; pretty and useful
-          :after (progn
-                   (global-rainbow-delimiters-mode)))
+   ;; (:name rainbow-delimiters            ; pretty and useful
+   ;;        :after (progn
+   ;;                 (global-rainbow-delimiters-mode)))
 
    (:name rainbow-mode
           :description "Colorize color names in buffers"
