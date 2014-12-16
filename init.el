@@ -81,7 +81,6 @@
    (:name protobuf-mode)         ; .proto files
    (:name ido-ubiquitous)        ; ido everywhere
    (:name s)                     ; a string library
-   (:name yasnippet)             ; powerful snippet mode
    ;; Requires No Setup ^^^^
    ;; Requires Setup vvvvvvv
    (:name ag
@@ -93,18 +92,19 @@
    (:name cider
           :type github
           :pkgname "clojure-emacs/cider"
-          :checkout "v0.6.0"
+          :checkout "v0.8.1"
           :after (progn
+                   (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
                    (add-hook 'cider-repl-mode-hook 'paredit-mode)
                    (add-hook 'clojure-mode-hook 'cider-mode)
-                   (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-                   (setq cider-repl-pop-to-buffer-on-connect nil)
-                   (setq nrepl-hide-special-buffers 1)
                    (setq cider-popup-stacktraces nil)
-                   (setq nrepl-buffer-name-show-port 1)
                    (setq cider-prompt-save-file-on-load nil)
+                   (setq cider-repl-history-file "~/.emacs.d/cider_repl_hist.txt")
                    (setq cider-repl-history-size 1000)
-                   (setq cider-repl-history-file "~/.emacs.d/cider_repl_hist.txt")))
+                   (setq cider-repl-pop-to-buffer-on-connect nil)
+									 (setq cider-test-show-report-on-success t)
+                   (setq nrepl-buffer-name-show-port 1)
+                   (setq nrepl-hide-special-buffers 1)))
 
    (:name clj-refactor
           :description "A collection of simple clojure refactoring functions"
@@ -116,7 +116,7 @@
    (:name clojure-mode
           :type github
           :pkgname "clojure-emacs/clojure-mode"
-          :checkout "3.0.0"
+          :checkout "3.0.1"
           :after (progn
                    (add-hook
                     'clojure-mode-hook
@@ -124,6 +124,13 @@
                       (clj-refactor-mode 1)
                       (define-key clj-refactor-map (kbd "M-C->") 'cljr-thread)
                       (define-key clj-refactor-map (kbd "M-C-<") 'cljr-unwind)))))
+
+   (:name clojure-snippets
+          :description "yasnippet 0.7.0+ snippets for clojure"
+          :depends yasnippet
+          :type github
+          :pkgname "swannodette/clojure-snippets")
+
 
    (:name color-theme-solarized
           :description "Emacs highlighting using Ethan Schoonover's Solarized color scheme"
@@ -364,6 +371,11 @@
                    ;; C-c C-p to enter edit mode in grep view
                    (setq wgrep-auto-save-buffer t)))
 
+	 (:name wsd-mode
+					:type github
+					:pkgname "josteink/wsd-mode"
+					:checkout "b350a8fe01246beda735263c70381e8adabb9deb")
+
    (:name undo-tree
           :description "Treat undo history as a tree"
           :website "http://www.dr-qubit.org/emacs.php"
@@ -374,7 +386,21 @@
                    (global-undo-tree-mode 1)))
    (:name volatile-highlights ;; see what you undo'd
           :after (progn
-                   (volatile-highlights-mode 1)))))
+                   (volatile-highlights-mode 1)))
+
+   (:name yasnippet
+          :website "https://github.com/capitaomorte/yasnippet.git"
+          :description "YASnippet is a template system for Emacs."
+          :type github
+          :pkgname "capitaomorte/yasnippet"
+          :compile "yasnippet.el"
+          :submodule nil
+          :build (("git" "submodule" "update" "--init" "--" "snippets"))
+          :after (progn
+                   (when (require 'yasnippet nil 'noerror)
+                     (progn
+                       (yas/load-directory "~/.emacs.d/snippets")))))))
+
 (setq my:el-get-packages '(el-get))
 
 ;; Some recipes require extra tools to be installed
@@ -438,15 +464,15 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
 	 (quote
-		("7fde61efa16011b294db1448de9e0ae45d602ae949a640164bce6fece4420e90" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default))))
+		("47e9350059e9a61ac89a695eec2d050e67a9e93ade5617a499843e1956c66f59" "7fde61efa16011b294db1448de9e0ae45d602ae949a640164bce6fece4420e90" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(clojure-test-error-face ((t (:background "yellow4"))) t)
- '(clojure-test-failure-face ((t (:background "brown4"))) t)
+ '(clojure-test-error-face ((t (:background "yellow4"))))
+ '(clojure-test-failure-face ((t (:background "brown4"))))
  '(vhl/default-face ((t (:background "#6b0000")))))
 ;; get bg color: (face-attribute 'default :background)
 
