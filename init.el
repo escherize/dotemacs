@@ -80,7 +80,6 @@
    (:name pkg-info)              ; a dependancy
    (:name protobuf-mode)         ; .proto files
    (:name ido-ubiquitous)        ; ido everywhere
-   (:name s)                     ; a string library
    ;; Requires No Setup ^^^^
    ;; Requires Setup vvvvvvv
    (:name ag
@@ -339,7 +338,7 @@
 
    (:name projectile
           :type github
-          :pkgname
+          :pkgname "bbatsov/projectile"
           :checkout "v0.11.0"
           :description "Project jumping, searching, finding functions"
           :after (progn
@@ -347,7 +346,7 @@
 
    (:name rainbow-delimiters            ; pretty and useful
           :after (progn
-                   (global-rainbow-delimiters-mode)))
+									 (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)))
 
    (:name rainbow-mode
           :description "Colorize color names in buffers"
@@ -355,6 +354,11 @@
           :checkout "2298c419aec2a6cac85f94e9627fec4c0d373c5f"
           :pkgname "emacsmirror/rainbow-mode"
           :type elpa)
+
+	 (:name s
+       :description "The long lost Emacs string manipulation library."
+       :type github
+       :pkgname "magnars/s.el")
 
    (:name smex
           :after (progn
@@ -464,7 +468,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
 	 (quote
-		("47e9350059e9a61ac89a695eec2d050e67a9e93ade5617a499843e1956c66f59" "7fde61efa16011b294db1448de9e0ae45d602ae949a640164bce6fece4420e90" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default))))
+		("420efa03d9c9c519a4a7eca29918805387b8a7709e23b283f64a3163403e6b7d" "47e9350059e9a61ac89a695eec2d050e67a9e93ade5617a499843e1956c66f59" "7fde61efa16011b294db1448de9e0ae45d602ae949a640164bce6fece4420e90" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
