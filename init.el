@@ -102,7 +102,7 @@
                    (setq cider-repl-history-file "~/.emacs.d/cider_repl_hist.txt")
                    (setq cider-repl-history-size 1000)
                    (setq cider-repl-pop-to-buffer-on-connect nil)
-									 (setq cider-test-show-report-on-success t)
+                   (setq cider-test-show-report-on-success t)
                    (setq nrepl-buffer-name-show-port 1)
                    (setq nrepl-hide-special-buffers 1)))
 
@@ -339,16 +339,21 @@
 
    (:name projectile
           :type github
-          :pkgname
+          :pkgname "bbatsov/projectile"
           :checkout "v0.11.0"
           :description "Project jumping, searching, finding functions"
-          ;; :after (progn
-          ;;          (projectile-global-mode))
-					)
+          :after (progn
+                   (unwind-protect
+                       (projectile-global-mode))))
 
-   ;; (:name rainbow-delimiters            ; pretty and useful
-   ;;        :after (progn
-   ;;                 (global-rainbow-delimiters-mode)))
+   (:name rainbow-delimiters
+          :website "https://github.com/jlr/rainbow-delimiters#readme"
+          :description "Color nested parentheses, brackets, and braces according to their depth."
+          :type github
+          :pkgname "jlr/rainbow-delimiters"
+          :after (progn
+                   (global-rainbow-delimiters-mode)))
+
 
    (:name rainbow-mode
           :description "Colorize color names in buffers"
@@ -372,10 +377,10 @@
                    ;; C-c C-p to enter edit mode in grep view
                    (setq wgrep-auto-save-buffer t)))
 
-	 (:name wsd-mode
-					:type github
-					:pkgname "josteink/wsd-mode"
-					:checkout "b350a8fe01246beda735263c70381e8adabb9deb")
+   (:name wsd-mode
+          :type github
+          :pkgname "josteink/wsd-mode"
+          :checkout "b350a8fe01246beda735263c70381e8adabb9deb")
 
    (:name undo-tree
           :description "Treat undo history as a tree"
@@ -464,8 +469,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-	 (quote
-		("47e9350059e9a61ac89a695eec2d050e67a9e93ade5617a499843e1956c66f59" "7fde61efa16011b294db1448de9e0ae45d602ae949a640164bce6fece4420e90" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default))))
+   (quote
+    ("47e9350059e9a61ac89a695eec2d050e67a9e93ade5617a499843e1956c66f59" "7fde61efa16011b294db1448de9e0ae45d602ae949a640164bce6fece4420e90" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
