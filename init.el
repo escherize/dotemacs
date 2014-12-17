@@ -344,6 +344,10 @@
           :after (progn
                    (projectile-global-mode)))
 
+	 (:name queue
+       :description "Queue data structure"
+       :type elpa)
+
    (:name rainbow-delimiters            ; pretty and useful
           :after (progn
 									 (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)))
@@ -354,7 +358,7 @@
           :checkout "2298c419aec2a6cac85f94e9627fec4c0d373c5f"
           :pkgname "emacsmirror/rainbow-mode"
           :type elpa)
-
+	 
 	 (:name s
        :description "The long lost Emacs string manipulation library."
        :type github
