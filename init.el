@@ -101,7 +101,7 @@
                    (setq cider-repl-history-file "~/.emacs.d/cider_repl_hist.txt")
                    (setq cider-repl-history-size 1000)
                    (setq cider-repl-pop-to-buffer-on-connect nil)
-									 (setq cider-test-show-report-on-success t)
+                   (setq cider-test-show-report-on-success t)
                    (setq nrepl-buffer-name-show-port 1)
                    (setq nrepl-hide-special-buffers 1)))
 
@@ -342,15 +342,21 @@
           :checkout "v0.11.0"
           :description "Project jumping, searching, finding functions"
           :after (progn
-                   (projectile-global-mode)))
+                   (unwind-protect
+                       (projectile-global-mode))))
 
 	 (:name queue
        :description "Queue data structure"
        :type elpa)
 
    (:name rainbow-delimiters            ; pretty and useful
+          :website "https://github.com/jlr/rainbow-delimiters#readme"
+          :description "Color nested parentheses, brackets, and braces according to their depth."
+          :type github
+          :pkgname "jlr/rainbow-delimiters"
           :after (progn
 									 (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)))
+
 
    (:name rainbow-mode
           :description "Colorize color names in buffers"
@@ -379,10 +385,10 @@
                    ;; C-c C-p to enter edit mode in grep view
                    (setq wgrep-auto-save-buffer t)))
 
-	 (:name wsd-mode
-					:type github
-					:pkgname "josteink/wsd-mode"
-					:checkout "b350a8fe01246beda735263c70381e8adabb9deb")
+   (:name wsd-mode
+          :type github
+          :pkgname "josteink/wsd-mode"
+          :checkout "b350a8fe01246beda735263c70381e8adabb9deb")
 
    (:name undo-tree
           :description "Treat undo history as a tree"
