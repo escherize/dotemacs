@@ -49,6 +49,42 @@
   (setq mac-command-modifier 'super)
   (setq mac-option-modifier 'meta))
 
+;; Save here instead of littering current directory with emacs backup files
+(setq backup-directory-alist `(("." . "~/.saves")))
+
+;; Font size
+(define-key global-map (kbd "C-+") 'text-scale-increase)
+(define-key global-map (kbd "C--") 'text-scale-decrease)
+
+;; regex searches with C-M-[s|r]
+(global-set-key (kbd "C-M-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-M-r") 'isearch-backward-regexp)
+
+(defun save-macro (name)
+  "save a macro. Take a name as argument
+   and save the last defined macro under
+   this name at the end of your user.el"
+  (interactive "SName of the macro: ")
+  (kmacro-name-last-macro name)
+  (find-file "~/.emacs.d/user.el") ;; user-init-file
+  (goto-char (point-max))
+  (newline)
+  (insert-kbd-macro name)
+  (newline)
+  (switch-to-buffer nil))
+
+(defun date ()
+  (interactive)
+  (insert (format-time-string "%a, %b %e, %Y")))
+
+(defun stand ()
+  (interactive)
+  (find-file
+   (concat "~/notes/standup"
+           (format-time-string "-%Y-%m-%d")
+           ".org")))
+
+(global-set-key [f9] 'stand)
 
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;  el-get  ;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -92,6 +128,7 @@
           :type github
           :pkgname "clojure-emacs/cider"
           :checkout "v0.8.1"
+					:depends (dash queue clojure-mode pkg-info)
           :after (progn
                    (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
                    (add-hook 'cider-repl-mode-hook 'paredit-mode)
@@ -105,6 +142,8 @@
                    (setq nrepl-buffer-name-show-port 1)
                    (setq nrepl-hide-special-buffers 1)))
 
+
+	 
    (:name clj-refactor
           :description "A collection of simple clojure refactoring functions"
           :type github
@@ -435,42 +474,6 @@
  ;;;;;;;;;;;;;;;;;;;;;;; end of el-get  ;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Save here instead of littering current directory with emacs backup files
-(setq backup-directory-alist `(("." . "~/.saves")))
-
-;; Font size
-(define-key global-map (kbd "C-+") 'text-scale-increase)
-(define-key global-map (kbd "C--") 'text-scale-decrease)
-
-;; regex searches with C-M-[s|r]
-(global-set-key (kbd "C-M-s") 'isearch-forward-regexp)
-(global-set-key (kbd "C-M-r") 'isearch-backward-regexp)
-
-(defun save-macro (name)
-  "save a macro. Take a name as argument
-   and save the last defined macro under
-   this name at the end of your user.el"
-  (interactive "SName of the macro: ")
-  (kmacro-name-last-macro name)
-  (find-file "~/.emacs.d/user.el") ;; user-init-file
-  (goto-char (point-max))
-  (newline)
-  (insert-kbd-macro name)
-  (newline)
-  (switch-to-buffer nil))
-
-(defun date ()
-  (interactive)
-  (insert (format-time-string "%a, %b %e, %Y")))
-
-(defun stand ()
-  (interactive)
-  (find-file
-   (concat "~/notes/standup"
-           (format-time-string "-%Y-%m-%d")
-           ".org")))
-
-(global-set-key [f9] 'stand)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
