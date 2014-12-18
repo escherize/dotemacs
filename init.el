@@ -493,7 +493,7 @@
  '(vhl/default-face ((t (:background "#6b0000")))))
 ;; get bg color: (face-attribute 'default :background)
 
-;; one must load themes only after they're declared safe!
+;; one must load a theme only after they're declared safe!
 (load-theme 'moe-dark)
 
 (when (file-exists-p "~/.emacs.d/user.el")
